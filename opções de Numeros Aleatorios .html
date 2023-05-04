@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Probabilidade de ganhar na loteria</title>
+    <style>
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Probabilidade de ganhar na loteria</h1>
+    <form>
+      <label for="numeros-anteriores">Números sorteados nas últimas 3 semanas:</label>
+      <input type="text" id="numeros-anteriores" placeholder="Ex: 10 15 25 30 38 47  ...">
+
+      <label for="numero-jogado">Número jogado:</label>
+      <input type="number" id="numero-jogado" placeholder="Ex: 27">
+
+      <label for="quantidade-jogos">Quantidade de jogos:</label>
+      <input type="number" id="quantidade-jogos" placeholder="Ex: 10">
+
+      <button type="button" onclick="calcularProbabilidade()">Calcular probabilidade</button>
+
+      <button type="button" onclick="gerarNumeros()">Gerar próximos 6 números</button>
+    </form>
+
+    <h2>Resultado:</h2>
+    <p id="resultado"></p>
+
+    <script>
+      function calcularProbabilidade() {
+        var numerosAnteriores = document.getElementById("numeros-anteriores").value.trim();
+        var numeroJogado = parseInt(document.getElementById("numero-jogado").value.trim());
+        var quantidadeJogos = parseInt(document.getElementById("quantidade-jogos").value.trim());
+
+        var numeros = numerosAnteriores.split(" ");
+        var ocorrenciasNumeroJogado = numeros.filter(function(num) {
+          return parseInt(num) === numeroJogado;
+        }).length;
+
+        var probabilidade = 1 - Math.pow((48/49), (quantidadeJogos - ocorrenciasNumeroJogado));
+
+        document.getElementById("resultado").innerHTML = "A probabilidade de ganhar pelo menos um jogo jogando " + quantidadeJogos + " vezes é de " + (probabilidade * 100).toFixed(2) + "%.";
+      }
+
+      function gerarNumeros() {
+        var numerosGerados = [];
+        var numerosAnteriores = document.getElementById("numeros-anteriores").value.trim();
+
+        while (numerosGerados.length < 6) {
+          var numero = Math.floor(Math.random() * 49) + 1;
+          if (numerosAnteriores.indexOf(numero) === -1 && numerosGerados.indexOf(numero) === -1) {
+            numerosGerados.push(numero);
+          }
+        }
+
+        document.getElementById("resultado").innerHTML = "Próximos 6 números: " + numerosGerados.join(", ");
+      }
+    </script>
+  </body>
+</html> 
